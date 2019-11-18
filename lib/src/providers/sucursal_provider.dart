@@ -26,6 +26,23 @@ class SucursalProvider {
     return sucursales;
   }
 
+  Future<List<String>> cargarSucursal(String id) async {
+    final url = '$_url/sucursales.json?orderBy="id_supervisor"&equalTo="$id"';
+
+    final response = await http.get(url);
+
+    final Map<String, dynamic> decodedResp = json.decode(response.body);
+    List<String> listTemp = List<String>();
+
+    //print(decodedResp);
+    decodedResp.forEach((key, val) {
+      //idSuc = key;
+      listTemp.add(key);
+      listTemp.add(val['nombre']);
+    });
+    return listTemp;
+  }
+
   Future<bool> agregarSucursal(SucursalModel model) async {
     final url = '$_url/sucursales/${model.idSucursal}.json';
 

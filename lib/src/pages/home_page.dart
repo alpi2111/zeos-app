@@ -1,9 +1,11 @@
 //es la pagina home del administrador de la matriz
+import 'package:constructor_rajuma/src/pages/devoluciones_page.dart';
+import 'package:constructor_rajuma/src/pages/prestamos_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connectivity_widget/connectivity_widget.dart';
 
-import 'package:constructor_rajuma/src/providers/herramienta_provider.dart';
+//import 'package:constructor_rajuma/src/providers/herramienta_provider.dart';
 import 'package:constructor_rajuma/src/providers/sucursal_provider.dart';
 import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';
 import 'package:constructor_rajuma/src/utils/utils.dart';
@@ -17,8 +19,26 @@ class _HomePageState extends State<HomePage> {
   final _prefs = PreferenciasUsuario();
   final _scaffoldKeyHome = GlobalKey<ScaffoldState>();
   final _sucursalProvider = new SucursalProvider();
-  final _herramientaProvider = new HerramientaProvider();
+  //final _herramientaProvider = new HerramientaProvider();
+  String _idSucursal;
+  String _nomSucursal;
   int _index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (!_prefs.isAdmin) {
+      //print(_prefs.encargado);
+      //String _completo = _prefs.encargado;
+      //print(_a.split("@"));
+      String _id = _prefs.encargado.split("@")[0];
+      _sucursalProvider.cargarSucursal(_id).then((val) {
+        _idSucursal = val[0];
+        _nomSucursal = val[1];
+      });
+    }
+  }
 
   //final con = new Con();
 
@@ -40,17 +60,28 @@ class _HomePageState extends State<HomePage> {
                 },
                 items: [
                   BottomNavigationBarItem(
-                      icon: RotatedBox(
-                        child: Icon(Icons.system_update_alt),
-                        quarterTurns: 2,
-                      ),
-                      title: Text('Préstamos')),
+                    icon: RotatedBox(
+                      child: Icon(Icons.system_update_alt),
+                      quarterTurns: 2,
+                    ),
+                    title: Text('Préstamos'),
+                  ),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.system_update_alt),
-                      title: Text('Devoluciones'))
+                    icon: Icon(Icons.system_update_alt),
+                    title: Text('Devoluciones'),
+                  ),
                 ],
               ),
-        floatingActionButton: _prefs.isAdmin ? _fabAdmin() : _fabNoAdmin(),
+        floatingActionButton: _prefs.isAdmin
+            ? _fabAdmin()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  _fabNoAdmin(),
+                  SizedBox(height: 10.0),
+                  _fabEmpleados(),
+                ],
+              ),
         persistentFooterButtons: _prefs.isAdmin ? _pbtnAdmin() : _pbtnNoAdmin(),
         key: _scaffoldKeyHome,
         appBar: AppBar(
@@ -182,19 +213,9 @@ class _HomePageState extends State<HomePage> {
   Widget _crearHerramientasSucursal(bool isOnline, int index) {
     switch (index) {
       case 0:
-        return FutureBuilder(
-          future: _herramientaProvider.obtenerHerramientasSucursal('j'),
-          //initialData: InitialData,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return Container();
-          },
-        );
+        return PrestamosPage();
       case 1:
-        return Container(
-          color: Colors.red,
-        );
-
-        break;
+        return DevolucionesPage();
       default:
         return Center(
           child: Text('Pagina no encontrada'),
@@ -231,7 +252,9 @@ class _HomePageState extends State<HomePage> {
           },
           child: Icon(Icons.perm_contact_calendar),
           tooltip: 'Ver Encargados',
-        )
+        ),
+        SizedBox(height: 10.0),
+        _fabEmpleados()
       ],
     );
   }
@@ -249,6 +272,15 @@ class _HomePageState extends State<HomePage> {
       },
       child: Icon(Icons.exit_to_app),
       tooltip: 'Cerrar Sesion',
+    );
+  }
+
+  _fabEmpleados() {
+    return FloatingActionButton(
+      heroTag: 'btnEmpleados',
+      onPressed: () {},
+      child: Icon(Icons.contacts),
+      tooltip: 'Ver Empleados',
     );
   }
 
@@ -274,7 +306,10 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _pbtnNoAdmin() {
     return <Widget>[
       RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed('agregar_herramienta',
+              arguments: [_nomSucursal, _idSucursal]);
+        },
         child: Text(
           'Agregar Herramienta',
           style: TextStyle(color: Colors.white),

@@ -47,4 +47,12 @@ class PreferenciasUsuario {
   set sucursal(String sucursal) {
     _prefs.setString('sucursal', sucursal);
   }
+
+  get encargado {
+    return _prefs.getString('encargado') ?? null;
+  }
+
+  set encargado(String encargado) {
+    _prefs.setString('encargado', encargado);
+  }
 }

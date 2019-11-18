@@ -1,4 +1,5 @@
 //import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';
+import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constructor_rajuma/src/providers/login_provider.dart';
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formLoginKey = GlobalKey<FormState>();
   final _scaffoldKeyLogin = GlobalKey<ScaffoldState>();
+  final _prefs = new PreferenciasUsuario();
 
   ////final a = connect.Connectivity();
   //final _prefs = new PreferenciasUsuario();
@@ -199,6 +201,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (dat['ok']) {
         ////Navigator.of(context).pushReplacementNamed('home');
+        //TODO hacer el agregado del usuario
+        _prefs.encargado = _login.usuario;
         Navigator.pushReplacementNamed(_scaffoldKeyLogin.currentContext, 'home');
         ////Navigator.pushReplacementNamed(Scaffold.of(context).context, 'home');
         //Navigator.pop(context);

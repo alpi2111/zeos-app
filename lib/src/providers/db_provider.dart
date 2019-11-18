@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:constructor_rajuma/src/models/empleado_model.dart';
 import 'package:constructor_rajuma/src/models/sucursal_model.dart';
 import 'package:constructor_rajuma/src/models/supervisor_model.dart';
-import 'package:constructor_rajuma/src/models/herramientas_model.dart';
+import 'package:constructor_rajuma/src/models/herramienta_model.dart';
 
 class DBProvider {
   static Database _database;
@@ -81,23 +81,23 @@ class DBProvider {
     //print(p)
   }
 
-  agregarHerramientaLocal(HerramientasModel model) async {
+  agregarHerramientaLocal(HerramientaModel model) async {
     final db = await database;
-    final res = db.insert('herramientas', model.toJsonFull());
-    return res;
+    //final res = db.insert('herramientas', model.toJsonFull());
+    //return res;
   }
 
-  agregarHerramientaFirebase(HerramientasModel model) async {
+  agregarHerramientaFirebase(HerramientaModel model) async {
     final url = "$_url/herramientas";
 
-    final resp = await http.put("$url/${model.idHerramienta}.json",
-        body: herramientasModelToJsonNoFull(model));
+    /*final resp = await http.put("$url/${model.idHerramienta}.json",
+        body: herramientaModelToJsonNoFull(model));
 
     final decodedData = json.decode(resp.body);
 
     if (decodedData == null)
       return false;
-    else
+    else*/
       return true;
   }
 
