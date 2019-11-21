@@ -27,31 +27,39 @@ class _VerEncargadosPageState extends State<VerEncargadosPage> {
               itemBuilder: (BuildContext context, int i) {
                 return Dismissible(
                   key: UniqueKey(),
-                  child: ListTile(
-                    //trailing: Icon(Icons.arrow_right),
-                    title: Text(
-                      snapshot.data[i].nombre,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        //trailing: Icon(Icons.arrow_right),
+                        title: Text(
+                          snapshot.data[i].nombre,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Usuario: ${snapshot.data[i].idSupervisor}'),
+                            Text('Contraseña: ${snapshot.data[i].password}'),
+                          ],
+                        ),
+                        onTap: () {},
                       ),
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Usuario: ${snapshot.data[i].idSupervisor}'),
-                        Text('Contraseña: ${snapshot.data[i].password}'),
-                      ],
-                    ),
-                    onTap: () {},
+                      Divider(),
+                    ],
                   ),
                   background: Container(
                     color: Colors.red,
                   ),
                   confirmDismiss: (direction) async {
-                    bool eliminar = await mostrarAlertaCerrarSesion(context, 'Eliminar', '¿Realmente desea eliminar el encargado?');
+                    bool eliminar = await mostrarAlertaCerrarSesion(context,
+                        'Eliminar', '¿Realmente desea eliminar el encargado?');
                     if (eliminar)
-                      await _supervisorProvider.eliminarSupervisor(snapshot.data[i].idSupervisor, snapshot.data[i].idToken);
+                      await _supervisorProvider.eliminarSupervisor(
+                          snapshot.data[i].idSupervisor,
+                          snapshot.data[i].idToken);
                     return eliminar;
                   },
                 );

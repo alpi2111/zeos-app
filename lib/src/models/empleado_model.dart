@@ -13,13 +13,11 @@ class EmpleadoModel {
     String idEmpleado;
     String idSucursal;
     String nombre;
-    String pass;
 
     EmpleadoModel({
         this.idEmpleado,
         this.idSucursal,
         this.nombre,
-        this.pass
     });
 
     factory EmpleadoModel.fromJson(Map<String, dynamic> json) => EmpleadoModel(
@@ -32,13 +30,11 @@ class EmpleadoModel {
         "id_empleado": idEmpleado,
         "id_sucursal": idSucursal,
         "nombre": nombre,
-        "pass": pass,
     };
     
     Map<String, dynamic> toJsonNoFull() => {
         //"id_empleado": idEmpleado,
         "id_sucursal": idSucursal,
         "nombre": nombre,
-        "pass": pass,
     };
 }

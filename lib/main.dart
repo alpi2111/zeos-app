@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 //import 'package:constructor_rajuma/src/utils/con.dart';
 
+import 'package:constructor_rajuma/src/pages/agregar_empleado_page.dart';
+import 'package:constructor_rajuma/src/pages/ver_empleados_page.dart';
 import 'package:constructor_rajuma/src/pages/ver_herramientas_page.dart';
 import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';
 import 'package:constructor_rajuma/src/pages/login_page.dart';
@@ -36,7 +38,9 @@ class MyApp extends StatelessWidget {
         'agregar_herramienta': (BuildContext context) => AgregarHerramientaPage(),
         'agregar_sucursal': (BuildContext context) => AgregarSucursalPage(),
         'agregar_encargado': (BuildContext context) => AgregarEncargadoPage(),
+        'agregar_empleado': (BuildContext context) => AgregarEmpleadoPage(),
         'ver_encargados': (BuildContext context) => VerEncargadosPage(),
+        'ver_empleados': (BuildContext context) => VerEmpleadosPage(),
       },
       theme: ThemeData(
         backgroundColor: Color.fromRGBO(185, 221, 237, 1.0),

@@ -1,10 +1,10 @@
 //es la pagina home del administrador de la matriz
-import 'package:constructor_rajuma/src/pages/devoluciones_page.dart';
-import 'package:constructor_rajuma/src/pages/prestamos_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connectivity_widget/connectivity_widget.dart';
 
+import 'package:constructor_rajuma/src/pages/devoluciones_page.dart';
+import 'package:constructor_rajuma/src/pages/prestamos_page.dart';
 //import 'package:constructor_rajuma/src/providers/herramienta_provider.dart';
 import 'package:constructor_rajuma/src/providers/sucursal_provider.dart';
 import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';
@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             Navigator.of(context).pushNamed('ver_encargados');
           },
-          child: Icon(Icons.perm_contact_calendar),
+          child: Icon(Icons.supervisor_account),
           tooltip: 'Ver Encargados',
         ),
         SizedBox(height: 10.0),
@@ -278,7 +278,9 @@ class _HomePageState extends State<HomePage> {
   _fabEmpleados() {
     return FloatingActionButton(
       heroTag: 'btnEmpleados',
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).pushNamed('ver_empleados', arguments: _idSucursal);
+      },
       child: Icon(Icons.contacts),
       tooltip: 'Ver Empleados',
     );
