@@ -64,11 +64,11 @@ class _HomePageState extends State<HomePage> {
                       child: Icon(Icons.system_update_alt),
                       quarterTurns: 2,
                     ),
-                    title: Text('Préstamos'),
+                    title: Text('En almacén'),
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.system_update_alt),
-                    title: Text('Devoluciones'),
+                    title: Text('Prestadas'),
                   ),
                 ],
               ),
@@ -246,6 +246,7 @@ class _HomePageState extends State<HomePage> {
         _fabNoAdmin(),
         SizedBox(height: 10.0),
         FloatingActionButton(
+          backgroundColor: Colors.blue,
           heroTag: 'btnVerEncargados',
           onPressed: () {
             Navigator.of(context).pushNamed('ver_encargados');
@@ -261,6 +262,7 @@ class _HomePageState extends State<HomePage> {
 
   _fabNoAdmin() {
     return FloatingActionButton(
+      backgroundColor: Colors.lightBlueAccent,
       heroTag: 'btnCerrarSesion',
       onPressed: () async {
         bool cerrar = await mostrarAlertaCerrarSesion(
@@ -277,6 +279,7 @@ class _HomePageState extends State<HomePage> {
 
   _fabEmpleados() {
     return FloatingActionButton(
+      backgroundColor: Colors.blueAccent,
       heroTag: 'btnEmpleados',
       onPressed: () {
         Navigator.of(context).pushNamed('ver_empleados', arguments: _idSucursal);
