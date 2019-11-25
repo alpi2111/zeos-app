@@ -77,6 +77,13 @@ class EmpleadoProvider {
   }
 
   Future<bool> eliminarEmpleado(String id) async {
-    return await true;
+    final url = "$_url/empleados/$id.json";
+
+    final response = await  http.delete(url);
+
+    final decodedRes = json.decode(response.body);
+
+    print(decodedRes);
+    return true;
   }
 }

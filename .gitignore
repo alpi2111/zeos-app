@@ -20,6 +20,9 @@
 # is commented out by default.
 #.vscode/
 
+# Build appks and bundles
+**build/*
+
 # Flutter/Dart/Pub related
 **/doc/api/
 .dart_tool/
@@ -36,6 +39,7 @@
 **/android/gradlew
 **/android/gradlew.bat
 **/android/local.properties
+**/android/key.properties
 **/android/**/GeneratedPluginRegistrant.java
 
 # iOS/XCode related

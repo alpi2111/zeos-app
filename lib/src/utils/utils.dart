@@ -1,4 +1,4 @@
-import 'package:constructor_rajuma/src/models/empleado_model.dart';
+//import 'package:constructor_rajuma/src/models/empleado_model.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:constructor_rajuma/src/preferences/preferencias_usuario.dart';

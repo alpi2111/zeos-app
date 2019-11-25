@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-import 'package:constructor_rajuma/src/models/herramienta_model.dart';
-import 'package:constructor_rajuma/src/providers/entrada_salida_provider.dart';
+//import 'package:constructor_rajuma/src/models/herramienta_model.dart';
+//import 'package:constructor_rajuma/src/providers/entrada_salida_provider.dart';
 
 class HerramientasBloc {
 
@@ -24,7 +24,7 @@ class HerramientasBloc {
   }
 
   agregarSalida() async {
-    _streamController.sink.add(await EntradaSalidaProvider().obtenerEnAlmacen());
+    //_streamController.sink.add(await EntradaSalidaProvider().obtenerEnAlmacen());
     //EntradaSalidaProvider().updateHerramientaDisponible(id, dispo)
   }
 }

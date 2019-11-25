@@ -1,8 +1,10 @@
-import 'package:constructor_rajuma/src/models/empleado_model.dart';
-import 'package:constructor_rajuma/src/providers/empleado_provider.dart';
-import 'package:constructor_rajuma/src/utils/utils.dart';
+import 'package:constructor_rajuma/src/pages/alert_page.dart';
 import 'package:flutter/material.dart';
 
+//import 'package:constructor_rajuma/src/models/empleado_model.dart';
+import 'package:constructor_rajuma/src/models/herramienta_model.dart';
+//import 'package:constructor_rajuma/src/providers/empleado_provider.dart';
+//import 'package:constructor_rajuma/src/utils/utils.dart';
 import 'package:constructor_rajuma/src/providers/entrada_salida_provider.dart';
 
 class PrestamosPage extends StatefulWidget {
@@ -12,15 +14,16 @@ class PrestamosPage extends StatefulWidget {
 
 class _PrestamosPageState extends State<PrestamosPage> {
   final _provider = EntradaSalidaProvider();
-  final _empProvider = EmpleadoProvider();
+  //final _empProvider = EmpleadoProvider();
 
-  String _opcion = 'Seleccione un empleado...';
-  String _opcionDetras = '';
+  //String _opcion = 'Seleccione un empleado...';
+  //String _opDetras = '';
+  //String _opcionDetras = '';
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _provider.obtenerEnAlmacen(),
-      builder: (context, AsyncSnapshot<List<String>> snapshot) {
+      builder: (context, AsyncSnapshot<List<HerramientaModel>> snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
             itemCount: snapshot.data.length,
@@ -32,21 +35,29 @@ class _PrestamosPageState extends State<PrestamosPage> {
                 ),
                 direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) async {
-                  bool eliminar = await mostrarAlertaCerrarSesion(context,
+                  bool eliminar = await mostrarAlertaSelEmpleado(context,
                       'Prestar', '¿A quién desea prestar la herramienta?');
                   if (eliminar)
                     //await _provider.updateHerramientaDisponible(key, id, dispo)
-                  return eliminar;
+                    //{Navigator.of(context).pushNamed('login');
+                    return eliminar;
+                    //}
+                  else
+                    return eliminar;
                 },
                 onDismissed: (a) {
-                  print(a);
+                  //TODO hacer que se mueva a otro lado
+                 _provider.updateStateHerramienta(snapshot.data[i].idFb, false);
                 },
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      title: Text(snapshot.data[i]),
+                      title: Text(snapshot.data[i].nombre),
+                      subtitle: Text(snapshot.data[i].idHerramienta),
+                      //leading: Text(snapshot.data[i].disponible.toString()),
                     ),
                     Divider(),
+                    //_crearEmpleados()
                   ],
                 ),
               );
@@ -61,79 +72,22 @@ class _PrestamosPageState extends State<PrestamosPage> {
     );
   }
 
-
-
-
   //la parte del alert
-  Future<bool> mostrarAlertaSelEmpleado(BuildContext context, String titulo, String mensaje) async {
-  bool si = false;
-  await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(titulo),
-          content: Column(
-            children: <Widget>[
-              Text(mensaje),
-              Text('otre'),
-              _crearEmpleados(),
-            ],
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            FlatButton(
-              child: Text('Si'),
-              onPressed: () {
-                si = true;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      });
-  return si;
-}
-
-Widget _crearEmpleados() {
-    return FutureBuilder(
-      future: getEmpleadosBD(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<EmpleadoModel>> snapshot) {
-        if (snapshot.hasData) {
-          return DropdownButton<EmpleadoModel>(
-            hint: Text(_opcion),
-            items: snapshot.data
-                .map((val) => DropdownMenuItem<EmpleadoModel>(
-                      child: Text(val.nombre),
-                      value: val,
-                    ))
-                .toList(),
-            onChanged: (opt) {
-              setState(() {
-                _opcion = opt.nombre;
-                _opcionDetras = opt.idEmpleado;
-              });
-            },
-          );
+  Future<bool> mostrarAlertaSelEmpleado(
+      BuildContext context, String titulo, String mensaje) async {
+    //bool si = false;
+    //final aaa = await _crearEmpleados();
+    await showDialog(
+      barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertPage();
+        });
+        if(AlertPage.isYes) {
+          return true;
         } else {
-          return CircularProgressIndicator();
+          return false;
         }
-      },
-    );
-  }
-
-  Future<List<EmpleadoModel>> getEmpleadosBD() async {
-    List<EmpleadoModel> empleados = List();
-
-    //empleados = await _empProvider.obtenerEmpleadoSucursal("suc322");
-    empleados = await _empProvider.obtenerTodosEmpleados();
-
-    return empleados;
+    //return si;
   }
 }

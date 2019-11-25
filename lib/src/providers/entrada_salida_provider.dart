@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:constructor_rajuma/src/models/herramienta_model.dart';
 import 'package:http/http.dart' as http;
 
 class EntradaSalidaProvider {
@@ -8,20 +9,25 @@ class EntradaSalidaProvider {
 
   //true es para las que se pueden prestar
   //false es para las que estan prestadas
-  Future<List<String>> obtenerEnAlmacen() async {
+  Future<List<HerramientaModel>> obtenerEnAlmacen() async {
     final url = '$_urlDisponible=true';
 
     final response = await http.get(url);
 
     final Map<String, dynamic> decodedResp = json.decode(response.body);
 
-    List<String> lista = List<String>();
+    List<HerramientaModel> lista = List<HerramientaModel>();
 
     //decodedResp
     if (decodedResp.isNotEmpty) {
       //print(decodedResp);
       decodedResp.forEach((key, val) {
-        final String temp = val['id_herramienta'];
+        final HerramientaModel temp = HerramientaModel();
+        temp.idHerramienta = val['id_herramienta'];
+        temp.nombre = val['nombre'];
+        temp.idSucursal = val['id_sucursal'];
+        temp.disponible = val['disponible'];
+        temp.idFb = key;
         lista.add(temp);
         //updateHerramientaDisponible(key, temp, false);
         //print(temp);
@@ -34,20 +40,26 @@ class EntradaSalidaProvider {
     }
   }
 
-  Future<List<String>> obtenerFueraAlmacen() async {
+  Future<List<HerramientaModel>> obtenerFueraAlmacen() async {
     final url = '$_urlDisponible=false';
 
     final response = await http.get(url);
 
     final Map<String, dynamic> decodedResp = json.decode(response.body);
 
-    List<String> lista = List<String>();
+    List<HerramientaModel> lista = List<HerramientaModel>();
 
     //decodedResp
     if (decodedResp.isNotEmpty) {
       //print(decodedResp);
       decodedResp.forEach((key, val) {
-        final String temp = val['id_herramienta'];
+        final HerramientaModel temp = HerramientaModel();
+        temp.idHerramienta = val['id_herramienta'];
+        temp.nombre = val['nombre'];
+        temp.idSucursal = val['id_sucursal'];
+        temp.disponible = val['disponible'];
+        temp.idFb = key;
+        //val['id_herramienta'];
         lista.add(temp);
         //updateHerramientaDisponible(key, temp, true);
         //print(temp);
@@ -62,10 +74,25 @@ class EntradaSalidaProvider {
   Future updateHerramientaDisponible(String key, String id, bool dispo) async {
     final url = '$_url/herramientas/$key/.json';
 
-    final resp = await http.patch(url, body: json.encode({"disponible": dispo}));
+    final resp =
+        await http.patch(url, body: json.encode({"disponible": dispo}));
 
     final decodedResp = json.decode(resp.body);
 
     print(decodedResp);
+  }
+
+  Future<bool> updateStateHerramienta(String id, bool state, {String empleado}) async {
+    final url = '$_url/herramientas/$id/.json';
+
+    final response =
+        await http.patch(url, body: json.encode({"disponible": state, "empleado" : empleado}));
+
+    final Map<String, dynamic> decodedResp = json.decode(response.body);
+
+    if (decodedResp.containsKey('disponible'))
+      return true;
+    else
+      return false;
   }
 }

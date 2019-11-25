@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
 
   _fabNoAdmin() {
     return FloatingActionButton(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Colors.orangeAccent,
       heroTag: 'btnCerrarSesion',
       onPressed: () async {
         bool cerrar = await mostrarAlertaCerrarSesion(
@@ -279,7 +279,7 @@ class _HomePageState extends State<HomePage> {
 
   _fabEmpleados() {
     return FloatingActionButton(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.lightBlueAccent,
       heroTag: 'btnEmpleados',
       onPressed: () {
         Navigator.of(context).pushNamed('ver_empleados', arguments: _idSucursal);
